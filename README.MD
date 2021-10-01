@@ -4,10 +4,8 @@ This project contains scripts that create/delete multiple security zones and vir
 
 ## Requirements
 
-Juniper Apstra version 4.0
-Ansible: `pip3/pip install ansible==2.10.4`
-
-(Use Ansible version >= 2.10)
+Juniper Apstra version 4.0 < br />
+Ansible: `pip3/pip install ansible==2.10.4` (Use Ansible version >= 2.10)
 
 ## Usage
 Clone repo
