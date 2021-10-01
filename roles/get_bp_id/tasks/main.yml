@@ -1,0 +1,19 @@
+### ---------------------------------------------------------------------------
+### GET BLUEPRINT ID
+### ---------------------------------------------------------------------------
+- name: "Get Blueprint ID"
+  uri:
+    url: "{{ apstra.baseurl }}/blueprints"
+    method: GET
+   # return_content: yes
+    status_code: 200
+    headers:
+      content-type: "application/json"
+      AUTHTOKEN: "{{ login.json.token }}"
+    validate_certs: false
+    force_basic_auth: yes
+  register: bp_ids
+
+- name: Retrieve Blueprint ID
+  set_fact: 
+    bp_id: "{{ bp_ids.json | cleanup_bp_id(bp_name) }}"

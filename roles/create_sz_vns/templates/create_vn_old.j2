@@ -1,0 +1,43 @@
+{
+   "virtual_networks": [
+      {
+         "vn_id": "5100",
+         "vn_type": "vxlan",
+         "svi_ips": [],
+         "default_endpoint_tag_types": {
+            "link": "vlan_tagged"
+         },
+         "virtual_gateway_ipv4": "192.168.100.254",
+         "bound_to": [
+            {
+               "system_id": "1c9f4d65-28e2-44b9-9156-89e399e27a8c",
+               "access_switch_node_ids": [],
+               "vlan_id": 100
+            },
+            {
+               "system_id": "d072a2c4-a81c-4b26-992f-5c37c6cac289",
+               "access_switch_node_ids": [],
+               "vlan_id": 100
+            },
+            {
+               "system_id": "f5bb0290-8089-42b8-8ccd-b8225662e6de",
+               "access_switch_node_ids": [],
+               "vlan_id": 100
+            }
+         ],
+         "vni_ids": [
+            5100
+         ],
+         "ipv4_subnet": "192.168.100.0/24",
+         "rt_policy": {
+            "import_RTs": null,
+            "export_RTs": null
+         },
+         "label": "vni100",
+         "ipv4_enabled": true,
+         "ipv6_enabled": false,
+         "security_zone_id": "b75730c8-d4ad-4e8a-8fbf-464b0a2f98cd",
+         "dhcp_service": "dhcpServiceDisabled"
+      }
+   ]
+}

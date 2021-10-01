@@ -1,0 +1,41 @@
+---
+  ### ---------------------------------------------------------------------------
+  ### APSTRA API AUTOMATION
+  ### ---------------------------------------------------------------------------
+  - hosts: localhost
+    gather_facts: False
+    connection: local
+    roles:
+      - { role: apstra_auth }
+      - { role: get_bp_id }
+
+    tasks:
+    - name: Initialize Variables
+      set_fact: 
+        leaf_ids: ""
+
+    - name: Create Security Zones and VNs
+      include_role:
+        name: create_sz_vns
+      with_items: "{{ security_zone }}"
+      loop_control:
+        loop_var: sz
+    
+### ---------------------------------------------------------------------------
+### ASSIGN EVPN L3 VNIS
+### ---------------------------------------------------------------------------
+    - name: "Assign EVPN L3 VNIs"
+      uri:
+        url: "{{ apstra.baseurl }}/blueprints/{{ bp_id }}/resource_groups/vni/evpn_l3_vnis"
+        method: PUT
+        status_code: 202
+        headers:
+          content-type: "application/json"
+          AUTHTOKEN: "{{ login.json.token }}"
+        validate_certs: false
+        body: '{"pool_ids":["Default-10000-20000"]}'
+        body_format: json
+
+    - name: "Commit Changes"
+      include_role:
+        name: commit_changes

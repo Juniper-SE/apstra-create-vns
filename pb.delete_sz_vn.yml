@@ -1,0 +1,23 @@
+---
+  ### ---------------------------------------------------------------------------
+  ### APSTRA API AUTOMATION
+  ### ---------------------------------------------------------------------------
+  - hosts: localhost
+    connection: local
+    gather_facts: False
+    become: False
+    roles:
+      - { role: apstra_auth }
+      - { role: get_bp_id }
+
+    tasks:
+    - name: Create Security Zones and VNs
+      include_role:
+        name: delete_sz_vns
+      with_items: "{{ security_zone }}"
+      loop_control:
+        loop_var: delete_sz
+
+    - name: "Commit Changes"
+      include_role:
+        name: commit_changes

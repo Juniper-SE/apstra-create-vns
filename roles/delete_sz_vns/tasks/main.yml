@@ -1,0 +1,16 @@
+- name: Get Security Zone ID
+  include_tasks: get_security_id.yml
+
+### ---------------------------------------------------------------------------
+### Delete Existing Security Zone If any
+### ---------------------------------------------------------------------------
+- name: "Delete Existing Security Zone"
+  uri:
+    url: "{{ apstra.baseurl }}/blueprints/{{ bp_id }}/security-zones/{{ delete_sz_id }}?async=full"
+    method: DELETE
+    status_code: 200, 202, 204
+    headers:
+      content-type: "application/json"
+      AUTHTOKEN: "{{ login.json.token }}"
+    validate_certs: false
+  ignore_errors: yes

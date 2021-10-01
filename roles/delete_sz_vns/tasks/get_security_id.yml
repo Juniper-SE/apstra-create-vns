@@ -1,0 +1,19 @@
+### ---------------------------------------------------------------------------
+### GET SECURITY ZONE ID
+### ---------------------------------------------------------------------------
+- name: "Get Security ID"
+  uri:
+    url: "{{ apstra.baseurl }}/blueprints/{{ bp_id }}/nodes?node_type=security_zone"
+    method: GET
+    return_content: yes
+    status_code: 200
+    headers:
+      content-type: "application/json"
+      AUTHTOKEN: "{{ login.json.token }}"
+    validate_certs: false
+    force_basic_auth: yes
+  register: security
+
+- name: set security zone ID
+  set_fact:
+    delete_sz_id: "{{ security.json | cleanup_security_zone(delete_sz.name) }}"

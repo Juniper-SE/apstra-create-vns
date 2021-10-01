@@ -1,0 +1,22 @@
+{
+   "sz_type": "evpn",
+   "routing_policy": {
+      "ospf_tag_id": null,
+      "import_policy": "all",
+      "extra_import_routes": [],
+      "export_policy": {
+         "spine_leaf_links": true,
+         "l2edge_subnets": true,
+         "loopbacks": true,
+         "l3edge_server_links": true
+      },
+      "extra_export_routes": [],
+      "aggregate_prefixes": []
+   },
+   "rt_policy": {
+      "import_RTs": null,
+      "export_RTs": null
+   },
+   "vrf_name": "{{ sz.name }}", 
+   "label": "{{ sz.name }}"
+}

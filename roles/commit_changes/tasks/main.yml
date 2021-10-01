@@ -1,0 +1,38 @@
+### ---------------------------------------------------------------------------
+### COMMIT CHANGES
+### ---------------------------------------------------------------------------
+- name: Wait for BP to be Up to date - 3secs
+  pause:
+    seconds: 3
+
+- name: "Get Current Staged Version"
+  uri:
+    url: "{{ apstra.baseurl }}/blueprints/{{ bp_id }}/diff-status"
+    method: GET
+    return_content: yes
+    status_code: 200
+    headers:
+      content-type: "application/json"
+      AUTHTOKEN: "{{ login.json.token }}"
+    validate_certs: false
+    force_basic_auth: yes
+    body_format: json
+  register: diff_status
+
+- name:
+  set_fact:
+    version_id: "{{ diff_status.json.staging_version }}"
+
+- name: "Deploy Staged Version"
+  uri:
+    url: "{{ apstra.baseurl }}/blueprints/{{ bp_id }}/deploy"
+    method: PUT
+    return_content: yes
+    status_code: 202
+    headers:
+      content-type: "application/json"
+      AUTHTOKEN: "{{ login.json.token }}"
+    validate_certs: false
+    force_basic_auth: yes
+    body: '{ "version": {{ diff_status.json.staging_version }} }'
+    body_format: json

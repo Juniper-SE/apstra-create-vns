@@ -1,0 +1,33 @@
+### ---------------------------------------------------------------------------
+### BUILD AUTHENTICATION PAYLOAD FOR APSTRA
+### ---------------------------------------------------------------------------
+- name: "Create a JSON payload with username and password for our auth task"
+  template:
+    src: apstra_auth.j2
+    dest: "/var/tmp/apstra_auth.json"
+    mode: 0640
+  run_once: True
+
+### ---------------------------------------------------------------------------
+### RECEIVE AUTH TOKEN FROM APSTRA
+### ---------------------------------------------------------------------------
+- name: "Login to Apstra and retrieve AUTH token"
+  uri:
+    url: "{{ apstra.baseurl }}/user/login"
+    method: POST
+    return_content: yes
+    status_code: 201
+    headers:
+      Content-Type: "application/json"
+    #user: "{{ apstra.username }}"
+    #password: "{{ apstra.password }}"
+    #body: "/var/tmp/apstra_auth.json"
+    validate_certs: false
+    body: "{{ lookup('file','/var/tmp/apstra_auth.json') }}"
+    force_basic_auth: yes
+    body_format: json
+  register: login
+  run_once: True
+
+- debug:
+    msg: "Retrieved Login Token"

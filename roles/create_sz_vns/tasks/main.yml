@@ -1,0 +1,87 @@
+- name: "Create Security Zones Payload"
+  template:
+    src: create_sz.j2
+    dest: "/var/tmp/create_sz_{{ sz.name }}.json"
+    mode: 0640
+ # with_items: "{{ security_zone }}"
+
+### ---------------------------------------------------------------------------
+### Create Security Zones
+### ---------------------------------------------------------------------------
+- name: "Create Security Zones"
+  uri:
+    url: "{{ apstra.baseurl }}/blueprints/{{ bp_id }}/security-zones?type=staging"
+    method: POST
+    return_content: yes
+    status_code: 201
+    headers:
+      content-type: "application/json"
+      AUTHTOKEN: "{{ login.json.token }}"
+    validate_certs: false
+    force_basic_auth: yes
+    body: "{{ lookup('file','/var/tmp/create_sz_{{ sz.name }}.json') }}"
+    body_format: json
+  ignore_errors: yes
+ # with_items: "{{ security_zone }}"
+
+- name: Get Security Zone ID
+  include_tasks: get_security_id.yml
+
+### ---------------------------------------------------------------------------
+### ASSIGN LOOPBACK IPS FOR TRANSIT VNIS
+### ---------------------------------------------------------------------------
+- name: "Assign Loopback IPs for Transit VNIs"
+  uri:
+    url: "{{ apstra.baseurl }}/blueprints/{{ bp_id }}/resource_groups/ip/sz%3A{{ sz_id }}%2Cleaf_loopback_ips"
+    method: PUT
+    status_code: 202
+    headers:
+      content-type: "application/json"
+      AUTHTOKEN: "{{ login.json.token }}"
+    validate_certs: false
+    force_basic_auth: yes
+    body: '{"pool_ids":["Private-172_16_0_0-12"]}'
+    body_format: json
+  ignore_errors: yes
+
+- name: Retrieve Leaf IDs
+  block:
+  - name: Get Device ID
+    include_role: 
+      name: get_node_system
+    vars:
+      node_type: system
+
+  - name: set system id
+    set_fact:
+      leaf_ids: "{{ node_system.json | cleanup_leaf_ids }}"
+  when: leaf_ids == ""
+
+- name: Get Security Zone ID
+  include_tasks: get_security_id.yml
+
+- name: "Create Virtual Network Payload"
+  template:
+    src: create_vn.j2
+    dest: "/var/tmp/create_{{ sz.name }}-VLAN{{ item.vlan_id }}.json"
+    mode: 0640
+  with_items: "{{ sz.vns }}"
+
+### ---------------------------------------------------------------------------
+### Create Virtual Networks
+### ---------------------------------------------------------------------------
+- name: "Create Virtual Networks"
+  uri:
+    url: "{{ apstra.baseurl }}/blueprints/{{ bp_id }}/virtual-networks-batch?async=full"
+    method: POST
+    return_content: yes
+    status_code: 202
+    headers:
+      content-type: "application/json"
+      AUTHTOKEN: "{{ login.json.token }}"
+    validate_certs: false
+    force_basic_auth: yes
+    body: "{{ lookup('file','/var/tmp/create_{{ sz.name }}-VLAN{{ item.vlan_id }}.json') }}"
+    body_format: json
+  with_items: "{{ sz.vns }}"
+  ignore_errors: yes
