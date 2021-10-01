@@ -33,5 +33,5 @@ ansible-playbook  pb.delete_sz_vn.yml
 
 ## Author Information
 
-Jindu Okoli 
+Jindu Okoli <br/>
 jokoli@juniper.net
