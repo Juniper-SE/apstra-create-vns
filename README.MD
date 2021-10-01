@@ -1,6 +1,6 @@
 ## Security Zones & Virtual Networks Creation/Deletion using Apstra APIs
 
-This script create/delete multiple security zones and virtual networks Via Apstra API calls
+This script create/delete multiple security zones and virtual networks, assigns all leaf devices to the VNs and commits the changes via Apstra API calls
 
 ## Requirements
 
