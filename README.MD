@@ -10,6 +10,10 @@ Ansible: `pip3/pip install ansible==2.10.4`
 (Use Ansible version >= 2.10)
 
 ## Usage
+Clone repo
+```
+git clone git@github.com:Juniper-SE/apstra-create-vns.git
+```
 
 Follow the steps below to run the scripts
 * Edit the group_vars/all/secrets.yml file and include the AIS credentials
