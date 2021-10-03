@@ -1,6 +1,6 @@
 ## Routing Zones & Virtual Networks Creation/Deletion using Apstra APIs
 
-This project contains scripts that create/delete multiple security zones and virtual networks, assign all leaf devices to the VNs and commit the changes via Apstra API calls
+This project contains scripts that create/delete multiple routing zones and virtual networks, assign all leaf devices to the VNs and commit the changes via Apstra API calls
 
 ## Requirements
 
@@ -18,12 +18,12 @@ Follow the steps below to run the scripts
 * Edit the group_vars/all/sz.yml file to include blueprint name (not the ID) already created in AIS, security zones and VNs to be created.
 * Run the scripts
 
-Script to create VNs and SZs:
+Script to create virtual networks and routing zones:
 ```
 ansible-playbook  pb.create_sz_vn.yml
 ```
 
-Script to delete VNs and SZs:
+Script to delete virtual networks and routing zones:
 ```
 ansible-playbook  pb.delete_sz_vn.yml
 ```
