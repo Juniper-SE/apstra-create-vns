@@ -19,9 +19,6 @@
     status_code: 201
     headers:
       Content-Type: "application/json"
-    #user: "{{ apstra.username }}"
-    #password: "{{ apstra.password }}"
-    #body: "/var/tmp/apstra_auth.json"
     validate_certs: false
     body: "{{ lookup('file','/var/tmp/apstra_auth.json') }}"
     force_basic_auth: yes
