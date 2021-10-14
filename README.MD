@@ -4,7 +4,7 @@ This project contains scripts that create/delete multiple routing zones and virt
 
 ## Requirements
 
-Juniper Apstra version 4.0 < br />
+Juniper Apstra version 4.0 <br>
 Ansible: `pip3/pip install ansible==2.10.4` (Use Ansible version >= 2.10)
 
 ## Usage
